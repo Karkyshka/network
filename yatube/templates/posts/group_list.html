@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block title %} {{ group.title }}{% endblock %}
+{% load thumbnail %}
+{% block content %} 
+<div class="container"> 
+  <h1> {{ group.title }} </h1>
+  <p> {{ group.description }} </p>
+  
+  
+  {% for post in page_obj %}
+  <article>
+    <ul>
+      <li>
+        Автор: {{post.author.get_full_name|default:post.author.username}}
+      </li>
+      <li>
+        Дата публикации: {{ post.pub_date|date:"d E Y" }}
+      </li>
+    </ul>
+    {% include 'posts/includes/thumbnail.html' %}    
+    <p>{{ post.text|linebreaksbr }}</p>  
+    <br>
+      <a href="{% url 'posts:profile' post.author %}">
+        все посты пользователя
+      </a>       
+  </article>
+    {% if not forloop.last %}<hr>{% endif %}
+    {% endfor %}
+    {% include 'posts/includes/paginator.html' %}
+
+  
+</div>
+{%endblock%} 
+      
